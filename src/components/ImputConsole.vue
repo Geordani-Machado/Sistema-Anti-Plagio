@@ -5,27 +5,38 @@
 
     <div class="flex justify-between">
       <div>
-        <h1 class="mr-2 text-2xl text-gray-800 font-bold sm:text-4xl dark:text-gray-100">Olá 👋</h1>
-        <p class="mt-2 text-gray-600 dark:text-gray-200">Vamos Testar e aprimorar seus conhecimentos em programação</p>
+        <h1 class="mr-2 text-2xl text-gray-800 font-bold sm:text-3xl dark:text-gray-100 w-6/12">Digite abaixo a pergunta e a sua resposta para a mesma</h1>
+        
     </div>
 
-    <div class=" bg-lime-600 content-end h-12 border-2 border-lime-700 rounded-2xl p-2">
-      <h1 class=" font-bold text-2xl text-gray-100">Nota: {{ Nota }}/10 </h1>
-    </div>
   
     </div>
     
     
 
     
-      <div class="flex p-2">
-        
-            <CodeEditor 
+      <div class="">
+        <div>
+          <label>Pergunta</label>
+            <textarea
             :language_selector="true" 
-            v-model="SendConsole" 
+            v-model="Pergunta" 
             :copy_code="false"
             style="width: 66rem;">
-          </CodeEditor>
+            </textarea>
+        </div>
+            
+          
+          <div>
+            <label>Resposta</label>
+            <textarea 
+            :language_selector="true" 
+            v-model="Resposta" 
+            :copy_code="false"
+            style="width: 66rem;">
+          </textarea>
+          </div>
+          
            
             
         
@@ -39,16 +50,10 @@
       </div>
    
 
-    
-
-    <div className="mockup-code">
-      <pre data-prefix=">" className="text-success p-2"><code>{{ Console }}</code></pre>
-    </div>
-
-
-    <div class=" mt-9 bg-zinc-700   rounded-2xl p-2 ">
-        <span class="ml-2 text-sm text-gray-800 sm:text-base dark:text-gray-200 ">Analise do Professor:</span> <br/>
-        <span class="ml-2 text-sm text-gray-800 sm:text-base dark:text-gray-200 ">{{ Analise }}</span>
+  
+    <div class=" content-end mt-4">
+      <h1 class=" font-bold text-2xl text-gray-100">Chance de ser plagio:</h1>
+      <h1 class=" font-bold text-2xl text-gray-100">{{ Analise }} </h1>
     </div>
 
 
@@ -105,7 +110,6 @@ defineProps({
 
 import { defineProps } from 'vue'
 import sendGPTMessage from '@/services/server';
-import CodeEditor from 'simple-code-editor';
 
 export default {
     name: "HeaderComponent",
@@ -114,7 +118,8 @@ export default {
     },
     data(){
         return{
-            SendConsole: "",
+            Pergunta: "",
+            Resposta: "",
             Console: "",
             Nota: "-",
             Analise: "",
@@ -125,18 +130,16 @@ export default {
     },
     methods:{
         async ChatPGT(){
-            this.Analise = "Aguardando Analise dos nossos Professores..."
-            this.Nota = await sendGPTMessage("de uma nota de 0 a 10 para o código conforme os acertos, sendo a nota somente em numero e não tendo texto ou descrição do resultado da resposta" + this.SendConsole);
-            this.Console  = await sendGPTMessage(this.SendConsole + "simule um console com a execução do código");
-            this.Analise = await sendGPTMessage("Indentifique os possoveis erros no código:" + this.SendConsole);
-            //this.Nota = await sendGPTMessage("de uma nota de 0 a 10 para o código conforme os acertos, sendo a nota somente em numero e não tendo texto ou descrição do resultado da resposta" + this.SendConsole);
+            this.Analise = await sendGPTMessage( "Analise possiveis plagios com base na pergunta: " + this.Pergunta +" e na resposta: " + this.Resposta + " se o mesmo se encontra em algum site e se foi gerado por uma inteligencia artificial, se sim liste em quais sites e ai  ele foi gerado e encontrado")
+          
+            
             console.log(this.SendConsole)
         },
         
     },
   
     components: {
-      CodeEditor
+      
     }
 
    

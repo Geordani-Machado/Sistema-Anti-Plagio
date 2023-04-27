@@ -7,6 +7,7 @@ import CodeEditor from 'simple-code-editor';
 const app = createApp(App)
 app.use(router)
 
+
 app.component({'code-editor': CodeEditor});
 
 
